@@ -12,15 +12,21 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final todosList = ToDo.todoList();
   List<ToDo> _foundToDo = [];
   final _todoController = TextEditingController();
 
   @override
   void initState() {
-    _foundToDo = todosList;
     super.initState();
+    _loadTodosFromApi();
   }
+
+  void _loadTodosFromApi() async {
+    await ToDo.fetchAndPopulateTodos();
+    setState(() {
+      _foundToDo = List.from(ToDo.todosList);
+  });
+}
 
   @override
   Widget build(BuildContext context) {
@@ -135,16 +141,18 @@ class _HomeState extends State<Home> {
 
   void _deleteToDoItem(String id) {
     setState(() {
-      todosList.removeWhere((item) => item.id == id);
+      ToDo.todosList.removeWhere((item) => item.id == id);
+      _foundToDo = List.from(ToDo.todosList);
     });
   }
 
   void _addToDoItem(String toDo) {
     setState(() {
-      todosList.add(ToDo(
+      ToDo.todosList.add(ToDo(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
         todoText: toDo,
       ));
+      _foundToDo = List.from(ToDo.todosList);
     });
     _todoController.clear();
   }
@@ -152,9 +160,9 @@ class _HomeState extends State<Home> {
   void _runFilter(String enteredKeyword) {
     List<ToDo> results = [];
     if (enteredKeyword.isEmpty) {
-      results = todosList;
+      results = List.from(ToDo.todosList);
     } else {
-      results = todosList
+      results = ToDo.todosList
           .where((item) => item.todoText!
               .toLowerCase()
               .contains(enteredKeyword.toLowerCase()))
