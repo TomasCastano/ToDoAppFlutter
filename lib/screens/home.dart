@@ -22,7 +22,7 @@ class _HomeState extends State<Home> {
   }
 
   void _loadTodosFromApi() async {
-    await ToDo.fetchAndPopulateTodos();
+    await ToDo.fetchAndShowTodos();
     setState(() {
       _foundToDo = List.from(ToDo.todosList);
   });

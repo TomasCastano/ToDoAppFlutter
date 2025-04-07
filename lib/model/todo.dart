@@ -12,10 +12,9 @@ class ToDo {
     this.isDone = false,
   });
 
-  static List<ToDo> todosList = []; // Esta será usada por todoList()
+  static List<ToDo> todosList = [];
 
-  // Esta función la llamas desde main o initState antes de usar todoList()
-  static Future<void> fetchAndPopulateTodos() async {
+  static Future<void> fetchAndShowTodos() async {
     final url = Uri.parse('https://jsonplaceholder.typicode.com/todos');
 
     try {
