@@ -12,7 +12,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<ToDo> _foundToDo = [];
+  List<ToDo> _showedListToDo = [];
   final _todoController = TextEditingController();
 
   @override
@@ -24,7 +24,7 @@ class _HomeState extends State<Home> {
   void _loadTodosFromApi() async {
     await ToDo.fetchAndShowTodos();
     setState(() {
-      _foundToDo = List.from(ToDo.todosList);
+      _showedListToDo = List.from(ToDo.todosList);
   });
 }
 
@@ -58,7 +58,7 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                       ),
-                      for (ToDo todoo in _foundToDo.reversed)
+                      for (ToDo todoo in _showedListToDo.reversed)
                         ToDoItem(
                           todo: todoo,
                           onToDoChanged: _handleToDoChange,
@@ -142,7 +142,7 @@ class _HomeState extends State<Home> {
   void _deleteToDoItem(String id) {
     setState(() {
       ToDo.todosList.removeWhere((item) => item.id == id);
-      _foundToDo = List.from(ToDo.todosList);
+      _showedListToDo = List.from(ToDo.todosList);
     });
   }
 
@@ -152,7 +152,7 @@ class _HomeState extends State<Home> {
         id: DateTime.now().millisecondsSinceEpoch.toString(),
         todoText: toDo,
       ));
-      _foundToDo = List.from(ToDo.todosList);
+      _showedListToDo = List.from(ToDo.todosList);
     });
     _todoController.clear();
   }
@@ -170,7 +170,7 @@ class _HomeState extends State<Home> {
     }
 
     setState(() {
-      _foundToDo = results;
+      _showedListToDo = results;
     });
   }
 
